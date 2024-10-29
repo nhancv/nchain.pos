@@ -1,0 +1,28 @@
+scrape_configs:
+  - job_name: "single-node1"
+    scrape_interval: "2s"
+    static_configs:
+      - targets: ["single-node1:6060"]
+    profiling_config:
+      path_prefix: ''
+      pprof_config:
+        memory:
+          enabled: true
+          path: "/debug/pprof/heap"
+          delta: false
+        block:
+          enabled: true
+          path: "/debug/pprof/block"
+          delta: false
+        goroutine:
+          enabled: true
+          path: "/debug/pprof/goroutine"
+          delta: false
+        mutex:
+          enabled: true
+          path: "/debug/pprof/mutex"
+          delta: false
+        process_cpu:
+          enabled: true
+          path: "/debug/pprof/profile"
+          delta: true
