@@ -14,3 +14,7 @@ Check [blockchain/single_node/README.md](blockchain/single_node/README.md)
 ## Run a chain with multiple nodes
 
 Check [blockchain/multi_nodes/README.md](blockchain/multi_nodes/README.md)
+
+## Others
+
+- EVM Chain IBFT 2.0 PoA with Besu: https://github.com/nhancv/n-chain
