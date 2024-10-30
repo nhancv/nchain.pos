@@ -6,7 +6,16 @@ A `Bot` process to create mock transactions.
 
 ## Docs
 
-https://docs.evmos.org
+- Home: https://docs.evmos.org
+- Configuration: 
+    - Evmos: https://docs.evmos.org/validate/setup-and-configuration/configuration
+    - Tendermint Core: https://docs.tendermint.com/v0.34/tendermint-core/configuration.html
+- Fee market configuration: https://docs.evmos.org/protocol/modules/feemarket
+- Evmos unit/denomination:
+  ```
+  1 EVMOS = 10^18 atto evmos = 10^18 aevmos
+  1 ETH = 10^18 wei
+  ```
 
 ## Install evmosd CLI:
 
@@ -33,7 +42,6 @@ docker-compose down
 ```
 
 ### Access the Services:
-- Evmos Node (Metrics): http://localhost:26660/metrics
 - Prometheus (Metrics): http://localhost:9090
 - Grafana (Dashboard): http://localhost:8000 (admin/admin)
 
