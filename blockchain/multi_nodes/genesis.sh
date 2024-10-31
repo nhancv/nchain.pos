@@ -6,7 +6,7 @@ CHAINID="$CHAIN"_9000-1 # # Default is evmos_9000-1
 MONIKER="$CHAIN"
 BLOCK_TIME="1s" # Default is 3s
 DENOM="aevmos" # Default is aevmos = wei. Don't need to change
-MIN_GAS_PRICE="1$DENOM" # Default is 0aevmos. Tested with min 0.000000007 Gwei
+MIN_GAS_PRICE="7$DENOM" # Default is 0aevmos. Tested the valid minimum is 0.000000007 Gwei = 7aevmos
 
 # Config paths
 BUILD_DIR=$(pwd)/build
@@ -112,13 +112,13 @@ rm -rf "$CONFIG_APP.bak"
 sed -i.bak 's/localhost/0.0.0.0/g' "$CONFIG_CLIENT"
 rm -rf "$CONFIG_CLIENT.bak"
 
+echo "- Run validate-genesis to ensure everything worked and that the genesis file is setup correctly"
+evmosd validate-genesis --home $INIT_DIR
+
 echo "- Sync latest genesis and config files to all nodes"
 for (( i=0 ; i<$NODE_COUNT ; i++ ));do
     NODE_KEY="node$i"
     NODE_DIR="$BUILD_DIR/$NODE_KEY"
     cp $GENESIS $CONFIG_APP $CONFIG_CLIENT $CONFIG $NODE_DIR/config/
 done
-
-echo "- Run validate-genesis to ensure everything worked and that the genesis file is setup correctly"
-evmosd validate-genesis --home $INIT_DIR
 

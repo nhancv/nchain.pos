@@ -1,0 +1,29 @@
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+  phlare_data: {}
+
+networks:
+  multi_nodes_localnet:
+    external: true  # Referencing an existing network
+
+services:
+  extnode0:
+    image: tharsishq/evmos:v20.0.0
+    restart: always
+    container_name: extnode0
+    volumes:
+      - ./build/extnode0:/root/.evmosd
+      - ./node_stake.sh:/root/.evmosd/node_stake.sh
+      - ./node_unstake.sh:/root/.evmosd/node_unstake.sh
+    user: "root"
+    command: >
+      evmosd start --pruning=nothing --keyring-backend test
+    networks:
+      multi_nodes_localnet:
+        ipv4_address: 192.167.10.20
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:26657/status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5

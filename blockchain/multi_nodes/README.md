@@ -57,3 +57,27 @@ docker-compose down
 ### Dev tools
 
 - Mnemonic Code Converter: https://iancoleman.io/bip39/
+
+## Add more nodes
+
+### Setup external node
+
+The main chain must be launched first.
+
+```
+docker-compose -f docker-compose_external.yml up -d
+```
+
+### Stake token to external node
+
+```
+docker exec -it {EXTERNAL_NODE} bash "/root/.evmosd/node_stake.sh"
+```
+
+### UnStake token to external node
+
+Default "unstake_time"/"unbonding_time" is "1814400s" (21 days). The tokens will be available in your wallet after unbonding period.
+
+```
+docker exec -it {EXTERNAL_NODE} bash "/root/.evmosd/node_unstake.sh"
+```
