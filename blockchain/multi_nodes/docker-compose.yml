@@ -29,7 +29,6 @@ services:
     command:
       - /root/evmosd/node.sh
     networks:
-      sharednet:
       localnet:
         ipv4_address: 192.167.10.2
     healthcheck:
@@ -51,7 +50,6 @@ services:
     command:
       - /root/evmosd/node.sh
     networks:
-      sharednet:
       localnet:
         ipv4_address: 192.167.10.3
     healthcheck:
@@ -73,7 +71,6 @@ services:
     command:
       - /root/evmosd/node.sh
     networks:
-      sharednet:
       localnet:
         ipv4_address: 192.167.10.4
     healthcheck:
@@ -95,7 +92,6 @@ services:
     command:
       - /root/evmosd/node.sh
     networks:
-      sharednet:
       localnet:
         ipv4_address: 192.167.10.5
     healthcheck:
