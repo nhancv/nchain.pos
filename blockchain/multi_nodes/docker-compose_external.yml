@@ -16,6 +16,7 @@ services:
       - ./build/extnode0:/root/.evmosd
       - ./node_stake.sh:/root/.evmosd/node_stake.sh
       - ./node_unstake.sh:/root/.evmosd/node_unstake.sh
+      - ./node_restake.sh:/root/.evmosd/node_restake.sh
     user: "root"
     command: >
       evmosd start --pruning=nothing --keyring-backend test

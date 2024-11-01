@@ -67,7 +67,8 @@ echo "Modify EVM genesis..."
 echo "- Set max gas and block minimum time"
 jq '
 .consensus["params"]["block"]["max_gas"]="100000000" |
-.consensus["params"]["block"]["time_iota_ms"]="0"
+.consensus["params"]["block"]["time_iota_ms"]="0" |
+.app_state.staking.params.unbonding_time="60s"
 ' "$GENESIS" > "$GENESIS.tmp" && mv "$GENESIS.tmp" "$GENESIS"
 
 echo "- Set $DENOM as denom"
@@ -80,7 +81,7 @@ sed -i.bak 's/"max_deposit_period": "172800s"/"max_deposit_period": "24h0m0s"/g'
 sed -i.bak 's/"voting_period": "172800s"/"voting_period": "24h0m0s"/g' "$GENESIS"
 sed -i.bak 's/"expedited_voting_period": "86400s"/"expedited_voting_period": "1h0m0s"/g' "$GENESIS"
 # Change proposal required quorum to 15%, so with the orchestrator vote the proposals pass
-sed -i.bak 's/"quorum": "0.334000000000000000"/"quorum": "0.150000000000000000"/g' "$GENESIS"
+#sed -i.bak 's/"quorum": "0.334000000000000000"/"quorum": "0.150000000000000000"/g' "$GENESIS"
 rm -rf "$GENESIS.bak"
 
 echo "Modify EVM config..."

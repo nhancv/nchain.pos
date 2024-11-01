@@ -19,7 +19,8 @@ services:
     container_name: node0
     volumes:
       - ./build/node0:/home/evmos
-      - ./node.sh:/root/evmosd/node.sh
+      - ./node.sh:/root/.evmosd/node.sh
+      - ./node_transfer.sh:/root/.evmosd/node_transfer.sh
     ports:
       - "6060:6060"
       - "26659-26660:26656-26657"
@@ -27,7 +28,7 @@ services:
       - "1317:1317"
     user: "root"
     command:
-      - /root/evmosd/node.sh
+      - /root/.evmosd/node.sh
     networks:
       localnet:
         ipv4_address: 192.167.10.2
@@ -43,12 +44,12 @@ services:
     container_name: node1
     volumes:
       - ./build/node1:/home/evmos
-      - ./node.sh:/root/evmosd/node.sh
+      - ./node.sh:/root/.evmosd/node.sh
     ports:
       - "6061:6060"
     user: "root"
     command:
-      - /root/evmosd/node.sh
+      - /root/.evmosd/node.sh
     networks:
       localnet:
         ipv4_address: 192.167.10.3
@@ -64,12 +65,12 @@ services:
     container_name: node2
     volumes:
       - ./build/node2:/home/evmos
-      - ./node.sh:/root/evmosd/node.sh
+      - ./node.sh:/root/.evmosd/node.sh
     ports:
       - "6062:6060"
     user: "root"
     command:
-      - /root/evmosd/node.sh
+      - /root/.evmosd/node.sh
     networks:
       localnet:
         ipv4_address: 192.167.10.4
@@ -85,12 +86,12 @@ services:
     container_name: node3
     volumes:
       - ./build/node3:/home/evmos
-      - ./node.sh:/root/evmosd/node.sh
+      - ./node.sh:/root/.evmosd/node.sh
     ports:
       - "6063:6060"
     user: "root"
     command:
-      - /root/evmosd/node.sh
+      - /root/.evmosd/node.sh
     networks:
       localnet:
         ipv4_address: 192.167.10.5

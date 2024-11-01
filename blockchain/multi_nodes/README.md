@@ -62,22 +62,63 @@ docker-compose down
 
 ### Setup external node
 
-The main chain must be launched first.
+- The main chain must be launched first.
+
+- Setup genesis config files:
+
+```
+./genesis_external.sh
+```
+
+- Start external node:
 
 ```
 docker-compose -f docker-compose_external.yml up -d
 ```
 
-### Stake token to external node
+### Check external wallet balance
 
 ```
-docker exec -it {EXTERNAL_NODE} bash "/root/.evmosd/node_stake.sh"
+curl -X POST -H "Content-Type: application/json" \
+--data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x1cF80B60F4F58221AaFFDBb2e513C0Ef1F809494", "latest"],"id":9000}' \
+http://localhost:8545
+
+=> It's empty now
+{"jsonrpc":"2.0","id":9000,"result":"0x0"}
 ```
 
-### UnStake token to external node
-
-Default "unstake_time"/"unbonding_time" is "1814400s" (21 days). The tokens will be available in your wallet after unbonding period.
+### Transfer coins from node0 to external node for staking
 
 ```
-docker exec -it {EXTERNAL_NODE} bash "/root/.evmosd/node_unstake.sh"
+docker exec -it node0 bash "/root/.evmosd/node_transfer.sh"
+```
+
+### Stake token to a new external node
+
+Create new validator initialized with a self-delegation transaction to it. Stake 10 Coins
+
+```
+docker exec -it extnode0 bash "/root/.evmosd/node_stake.sh"
+```
+
+### UnStake token from external node
+
+UnStake 1 Coins. Default "unstake_time"/"unbonding_time" is "1814400s" (21 days). The tokens will be available in your wallet after unbonding period.
+
+```
+docker exec -it extnode0 bash "/root/.evmosd/node_unstake.sh"
+```
+
+- Get balance of the external wallet with evmosd CLI:
+
+```
+docker exec -it extnode0 bash -c "evmosd query bank balances evmos1rnuqkc857kpzr2hlmwew2y7qau0cp9y5e3gng4"
+```
+
+### ReStake token to external node
+
+ReStake 1 Coins.
+
+```
+docker exec -it extnode0 bash "/root/.evmosd/node_restake.sh"
 ```
