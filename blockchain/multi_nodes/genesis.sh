@@ -7,6 +7,7 @@ MONIKER="$CHAIN"
 BLOCK_TIME="1s" # Default is 3s
 DENOM="aevmos" # Default is aevmos = wei. Don't need to change
 MIN_GAS_PRICE="7$DENOM" # Default is 0aevmos. Tested the valid minimum is 0.000000007 Gwei = 7aevmos
+UNBONDING_TIME="60s" # Default is 1814400s = 21 days. DO NOT change to too short like 1s, it will cause the network to be down.
 
 # Config paths
 BUILD_DIR=$(pwd)/build
@@ -65,10 +66,10 @@ evmosd collect-gentxs --gentx-dir $GENTXS_DIR --home $INIT_DIR
 
 echo "Modify EVM genesis..."
 echo "- Set max gas and block minimum time"
-jq '
+jq --arg UNBONDING_TIME "$UNBONDING_TIME" '
 .consensus["params"]["block"]["max_gas"]="100000000" |
 .consensus["params"]["block"]["time_iota_ms"]="0" |
-.app_state.staking.params.unbonding_time="60s"
+.app_state.staking.params.unbonding_time=$UNBONDING_TIME
 ' "$GENESIS" > "$GENESIS.tmp" && mv "$GENESIS.tmp" "$GENESIS"
 
 echo "- Set $DENOM as denom"

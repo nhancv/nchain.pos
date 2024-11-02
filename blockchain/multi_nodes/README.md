@@ -62,7 +62,7 @@ docker-compose down
 
 ### Setup external node
 
-- The main chain must be launched first.
+- REQUIRED: The main chain must be launched first.
 
 - Setup genesis config files:
 
@@ -74,6 +74,12 @@ docker-compose down
 
 ```
 docker-compose -f docker-compose_external.yml up -d
+```
+
+- Stop external node:
+
+```
+docker-compose -f docker-compose_external.yml down
 ```
 
 ### Check external wallet balance
@@ -95,7 +101,12 @@ docker exec -it node0 bash "/root/.evmosd/node_transfer.sh"
 
 ### Stake token to a new external node
 
-Create new validator initialized with a self-delegation transaction to it. Stake 10 Coins
+Create new validator initialized with a self-delegation transaction to it. Stake 10 Coins.
+- To be a new validator in the list, use new staking, not ReStake 
+- You cannot run a new staking again to an existing validator. Use ReStake instead.
+- To withdraw the staked tokens, use UnStake. The validator is still in the list with status `BOND_STATUS_UNBONDING` and tokens is `0`. Wait for the unbonding period to get the tokens back automatically, and the validators will be updated accordingly.
+- To stake more tokens, use ReStake.
+- The unbonding period is 21 days by default. You can change it in the genesis file. But if the period is too short, the validator may be slashed. I tested with `1s`, after unstake the whole network was down and can't recover.
 
 ```
 docker exec -it extnode0 bash "/root/.evmosd/node_stake.sh"
@@ -121,4 +132,10 @@ ReStake 1 Coins.
 
 ```
 docker exec -it extnode0 bash "/root/.evmosd/node_restake.sh"
+```
+
+### Check validators status
+
+```
+docker exec -it node0 bash -c "evmosd query staking validators"
 ```
