@@ -7,15 +7,15 @@ A `Bot` process to create mock transactions.
 ## Docs
 
 - Home: https://docs.evmos.org
-- Configuration: 
-    - Evmos: https://docs.evmos.org/validate/setup-and-configuration/configuration
-    - Tendermint Core: https://docs.tendermint.com/v0.34/tendermint-core/configuration.html
-- Fee market configuration: https://docs.evmos.org/protocol/modules/feemarket
 - Evmos unit/denomination:
   ```
   1 EVMOS = 10^18 atto evmos = 10^18 aevmos
   1 ETH = 10^18 wei
   ```
+- Links:
+  + https://docs.evmos.org/protocol/modules
+  + https://docs.tendermint.com/v0.34/tendermint-core/configuration.html
+  + https://hub.cosmos.network/main/resources/genesis
 
 ## Install evmosd CLI:
 

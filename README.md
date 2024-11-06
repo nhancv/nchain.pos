@@ -1,4 +1,4 @@
-# nchain.evmos
+# nchain.pos
 
 This repository contains the source code for the EVM implementation on the Evmos SDK.
 
@@ -17,4 +17,4 @@ Check [blockchain/multi_nodes/README.md](blockchain/multi_nodes/README.md)
 
 ## Others
 
-- EVM Chain IBFT 2.0 PoA with Besu: https://github.com/nhancv/n-chain
+- EVM Chain IBFT 2.0 PoA with Besu: https://github.com/nhancv/nchain.poa
