@@ -22,7 +22,7 @@ echo " + Creating $NODE_KEY at: $NODE_DIR"
 rm -rf $NODE_DIR
 mkdir -p $NODE_DIR/config/
 
-# Init node data
+echo "Init $CHAIN with moniker=$NODE_KEY and chain-id=$CHAINID"
 #├── config
 #│   ├── app.toml
 #│   ├── client.toml
@@ -32,7 +32,7 @@ mkdir -p $NODE_DIR/config/
 #│   └── priv_validator_key.json
 #├── data
 #│   └── priv_validator_state.json
-evmosd init $NODE_KEY --chain-id $CHAINID --home $NODE_DIR
+evmosd init $NODE_KEY --chain-id $CHAINID --home $NODE_DIR > /dev/null 2>&1
 
-# Sync with latest chain config and genesis files
+echo "Sync with latest chain config and genesis files"
 cp $GENESIS $CONFIG_APP $CONFIG_CLIENT $CONFIG $NODE_DIR/config/

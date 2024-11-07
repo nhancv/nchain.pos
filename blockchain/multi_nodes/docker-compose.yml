@@ -175,9 +175,10 @@ services:
 #      - node0
 #    networks:
 #      - localnet
+#    volumes:
+#      - ./build/node0/key_priv.hex:/tmp/key_priv.hex
+#    entrypoint: [ "sh", "-c", "export ORCH_PRIV_KEY=$(cat /tmp/key_priv.hex) && node ./dist/index.js" ]
 #    environment:
-#      # 0x1cF80B60F4F58221AaFFDBb2e513C0Ef1F809494
-#      - ORCH_PRIV_KEY=0x1c384b3fb9a1cff8caee1e2d078bb9bc28a542dcc7ac779a445dc68b3dc2fe1f
 #      - RPC_URL=http://node0:8545
 #      - API_URL=http://node0:1317
 #      - LOG_LEVEL=info

@@ -15,6 +15,7 @@ A `Bot` process to create mock transactions.
 - Links:
   + https://docs.evmos.org/protocol/modules
   + https://docs.tendermint.com/v0.34/tendermint-core/configuration.html
+  + https://docs.tendermint.com/v0.34/tendermint-core/running-in-production.html
   + https://hub.cosmos.network/main/resources/genesis
 
 ## Install evmosd CLI:
@@ -41,6 +42,20 @@ docker-compose up -d
 docker-compose down
 ```
 
+## Run dump transactions bot
+
+- Start:
+
+```
+docker-compose -f docker-compose_bot.yml up -d
+```
+
+- Stop:
+
+```
+docker-compose -f docker-compose_bot.yml down
+```
+
 ### Access the Services:
 - Prometheus (Metrics): http://localhost:9090
 - Grafana (Dashboard): http://localhost:8000 (admin/admin)
@@ -52,15 +67,13 @@ docker-compose down
 - Symbol: `tEVMOS`
 - Block Explorer URL: `http://localhost`
 
-**NOTE**: You should import validator key to Metamask and transfer some coins to `0x1cF80B60F4F58221AaFFDBb2e513C0Ef1F809494` for `tx-bot1` to work.
-
 ### Dev tools
 
 - Mnemonic Code Converter: https://iancoleman.io/bip39/
 
 ## Add more nodes
 
-### Setup external node
+### Setup external node/validator
 
 - REQUIRED: The main chain must be launched first.
 

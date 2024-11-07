@@ -12,7 +12,7 @@ UNBONDING_TIME="60s" # Default is 1814400s = 21 days. DO NOT change to too short
 # Config paths
 BUILD_DIR=$(pwd)/build
 INIT_DIR=$BUILD_DIR/evmosd
-GENTXS_DIR=$BUILD_DIR/gentxs
+GENTXS_DIR=$INIT_DIR/gentxs
 CONF_DIR=$INIT_DIR/config
 GENESIS=$CONF_DIR/genesis.json
 CONFIG_APP=$CONF_DIR/app.toml
@@ -25,7 +25,7 @@ mkdir -p "$INIT_DIR"
 
 # Generate genesis file and config files
 echo "Init $CHAIN with moniker=$MONIKER and chain-id=$CHAINID"
-evmosd init "$MONIKER" --chain-id "$CHAINID" --home "$INIT_DIR" --default-denom "$DENOM"
+evmosd init "$MONIKER" --chain-id "$CHAINID" --home "$INIT_DIR" --default-denom "$DENOM" > /dev/null 2>&1
 
 # Create a folder to store genesis transaction
 mkdir -p $GENTXS_DIR
@@ -44,6 +44,7 @@ for i in "${!IPs[@]}"; do
     echo " + Creating $NODE_KEY at: $NODE_DIR"
     mkdir -p $NODE_DIR/config/
     evmosd keys add $NODE_KEY --home $NODE_DIR --chain-id "$CHAINID" --keyring-backend test --output json > $NODE_DIR/key_seed.json
+    yes | evmosd keys export $NODE_KEY --home $NODE_DIR --unsafe --unarmored-hex --keyring-backend test > $NODE_DIR/key_priv.hex
 
     # Config node genesis file
     cp $GENESIS $NODE_GENESIS
@@ -62,9 +63,9 @@ for i in "${!IPs[@]}"; do
 done
 
 echo "- Collect genesis tx"
-evmosd collect-gentxs --gentx-dir $GENTXS_DIR --home $INIT_DIR
+evmosd collect-gentxs --gentx-dir $GENTXS_DIR --home $INIT_DIR > /dev/null 2>&1
 
-echo "Modify EVM genesis..."
+echo "Customize EVM genesis $GENESIS"
 echo "- Set max gas and block minimum time"
 jq --arg UNBONDING_TIME "$UNBONDING_TIME" '
 .consensus["params"]["block"]["max_gas"]="100000000" |
@@ -85,9 +86,10 @@ sed -i.bak 's/"expedited_voting_period": "86400s"/"expedited_voting_period": "1h
 #sed -i.bak 's/"quorum": "0.334000000000000000"/"quorum": "0.150000000000000000"/g' "$GENESIS"
 rm -rf "$GENESIS.bak"
 
-echo "Modify EVM config..."
+echo "Customize EVM config $CONFIG"
 # Update config
 sed -i.bak 's/prometheus = false/prometheus = true/g' "$CONFIG"
+# Change block time
 sed -i.bak "s/timeout_propose = \"3s\"/timeout_propose = \"$BLOCK_TIME\"/g" "$CONFIG"
 sed -i.bak "s/timeout_commit = \"3s\"/timeout_commit = \"$BLOCK_TIME\"/g" "$CONFIG"
 # Change max_subscription to for bots workers
@@ -97,6 +99,7 @@ sed -i.bak 's/pprof_laddr = "localhost:6060"/pprof_laddr = "0.0.0.0:6060"/g' "$C
 sed -i.bak 's/127.0.0.1/0.0.0.0/g' "$CONFIG"
 rm -rf "$CONFIG.bak"
 
+echo "Customize EVM app config $CONFIG_APP"
 sed -i.bak 's/enable-indexer = false/enable-indexer = true/g' "$CONFIG_APP"
 sed -i.bak '/# Enable defines if the API server should be enabled/{n;s/enable = false/enable = true/;}' "$CONFIG_APP"
 sed -i.bak 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/g' "$CONFIG_APP"
@@ -111,6 +114,7 @@ sed -i.bak "s/minimum-gas-prices = \"0aevmos\"/minimum-gas-prices = \"$MIN_GAS_P
 sed -i.bak "s/aevmos/$DENOM/g" "$CONFIG_APP"
 rm -rf "$CONFIG_APP.bak"
 
+echo "Customize EVM client config $CONFIG_CLIENT"
 sed -i.bak 's/localhost/0.0.0.0/g' "$CONFIG_CLIENT"
 rm -rf "$CONFIG_CLIENT.bak"
 
